@@ -1,8 +1,8 @@
 [submodule "drucker"]
 	path = drucker
 	url = https://github.com/drucker/drucker.git
-	branch = master
+	branch = v0.3.2
 [submodule "drucker-grpc-proto"]
 	path = drucker-grpc-proto
 	url = https://github.com/drucker/drucker-grpc-proto.git
-	branch = master
+	branch = v0.3.2
