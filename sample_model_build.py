@@ -2,16 +2,16 @@
 # -*- coding: utf-8 -*-
 
 import os
-import yaml
 from sklearn.datasets import load_digits
 from sklearn.model_selection import train_test_split
 from sklearn.svm import LinearSVC
 from sklearn.metrics import accuracy_score
 from sklearn.externals import joblib
-from drucker.utils.env_loader import APPLICATION_NAME, DIR_MODEL
+from app import MyApp
 
-config = yaml.load(open("settings.yml", 'r'))
-_DIR_OUTPUT = '{0}/{1}/'.format(DIR_MODEL, APPLICATION_NAME)
+
+app = MyApp("./settings.yml")
+_DIR_OUTPUT = '{0}/{1}/'.format(app.config.DIR_MODEL, app.config.APPLICATION_NAME)
 _FILE_OUTPUT = _DIR_OUTPUT + 'default.model'
 
 

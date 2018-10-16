@@ -1,62 +1,52 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+
 import traceback
+import csv
+import os
 import io
 
 from enum import Enum
 
-from drucker.logger.logger_jsonlogger import SystemLogger
-from drucker.core.predict_interface import PredictInterface, PredictLabel, PredictResult, EvaluateResult
-from drucker.utils.env_loader import SERVICE_LEVEL_ENUM, APPLICATION_NAME
-from drucker.models import get_model_path, SERVICE_FIRST_BOOT
+from drucker.logger import JsonSystemLogger
+from drucker import Drucker
+from drucker.utils import PredictLabel, PredictResult, EvaluateResult
 
 import numpy as np
-import csv
-import os
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 from sklearn.externals import joblib
 
 
-class Predict(PredictInterface):
-    def __init__(self):
-        super().__init__()
-        self.predictor = None
-        self.logger = SystemLogger(logger_name="drucker_predict", app_name=APPLICATION_NAME, app_env=SERVICE_LEVEL_ENUM)
-        self.load_model(get_model_path())
+class MyApp(Drucker):
+    def __init__(self, config_file: str = None):
+        super().__init__(config_file)
+        self.logger = JsonSystemLogger(self.config)
+        self.load_model()
 
     def set_type(self, type_input: Enum, type_output: Enum) -> None:
-        """@deprecated
-        """
         super().set_type(type_input, type_output)
 
     def get_type_input(self) -> Enum:
-        """@deprecated
-        """
         return super().get_type_input()
 
     def get_type_output(self) -> Enum:
-        """@deprecated
-        """
         return super().get_type_output()
 
-    def load_model(self, model_path: str = None) -> None:
+    def load_model(self) -> None:
         """ override
         Load ML model.
-
-        :param model_path:
         :return:
         """
-        assert model_path is not None, \
+        assert self.model_path is not None, \
             'Please specify your ML model path'
         try:
-            self.predictor = joblib.load(model_path)
-
+            self.predictor = joblib.load(self.model_path)
         except Exception as e:
             self.logger.error(str(e))
             self.logger.error(traceback.format_exc())
             self.predictor = None
-            if not SERVICE_FIRST_BOOT:
+            if not self.is_first_boot():
                 # noinspection PyProtectedMember
                 os._exit(-1)
 
@@ -84,7 +74,7 @@ class Predict(PredictInterface):
 
     def evaluate(self, file: bytes) -> EvaluateResult:
         """ override
-        [WIP] Evaluate.
+        [WIP] Evaluate
 
         :param file: Evaluation data file. bytes
         :return:
