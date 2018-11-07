@@ -1,5 +1,12 @@
 # Change Log
 
+## [v0.4.0](https://github.com/drucker/drucker-example/tree/v0.4.0) (2018-11-01)
+[Full Changelog](https://github.com/drucker/drucker-example/compare/v0.3.4...v0.4.0)
+
+**Merged pull requests:**
+
+- Update to pipnized Drucker \(v0.4.0\) [\#4](https://github.com/drucker/drucker-example/pull/4) ([keigohtr](https://github.com/keigohtr))
+
 ## [v0.3.4](https://github.com/drucker/drucker-example/tree/v0.3.4) (2018-10-03)
 [Full Changelog](https://github.com/drucker/drucker-example/compare/v0.3.3...v0.3.4)
 
