@@ -1,5 +1,13 @@
 # Change Log
 
+## [v0.4.1](https://github.com/drucker/drucker-example/tree/v0.4.1) (2018-11-20)
+[Full Changelog](https://github.com/drucker/drucker-example/compare/v0.4.0...v0.4.1)
+
+**Merged pull requests:**
+
+- Prepare for release v0.4.1 [\#6](https://github.com/drucker/drucker-example/pull/6) ([keigohtr](https://github.com/keigohtr))
+- add details for evaluation [\#5](https://github.com/drucker/drucker-example/pull/5) ([yuki-mt](https://github.com/yuki-mt))
+
 ## [v0.4.0](https://github.com/drucker/drucker-example/tree/v0.4.0) (2018-11-01)
 [Full Changelog](https://github.com/drucker/drucker-example/compare/v0.3.4...v0.4.0)
 
