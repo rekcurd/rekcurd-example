@@ -5,14 +5,13 @@
 import traceback
 import csv
 import os
-import io
 
 from enum import Enum
-from typing import Tuple, List
+from typing import Tuple, List, Iterator, Generator
 
 from drucker.logger import JsonSystemLogger
 from drucker import Drucker
-from drucker.utils import PredictLabel, PredictResult, EvaluateResult, EvaluateDetail
+from drucker.utils import PredictLabel, PredictResult, EvaluateResult, EvaluateDetail, EvaluateData
 
 import numpy as np
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
@@ -73,7 +72,15 @@ class MyApp(Drucker):
             self.logger.error(traceback.format_exc())
             raise e
 
-    def evaluate(self, file: bytes) -> Tuple[EvaluateResult, List[EvaluateDetail]]:
+    def parse_eval_data(self, file_path: str) -> Generator[EvaluateData, None, None]:
+        """parse file uploaded from dashboard
+        """
+        with open(file_path, 'r') as f:
+            reader = csv.reader(f, delimiter=",")
+            for row in reader:
+                yield EvaluateData(row[1:], int(row[0]))
+
+    def evaluate(self, eval_data: Iterator[EvaluateData]) -> Tuple[EvaluateResult, List[EvaluateDetail]]:
         """ override
         Evaluate
 
@@ -89,19 +96,17 @@ class MyApp(Drucker):
             details: detail result of each prediction
         """
         try:
-            f = io.StringIO(file.decode("utf-8"))
-            reader = csv.reader(f, delimiter=",")
             num = 0
             label_gold = []
             label_predict = []
             details = []
-            for row in reader:
+            for data in eval_data:
                 num += 1
-                correct_label = int(row[0])
+                correct_label = data.label
                 label_gold.append(correct_label)
-                result = self.predict(row[1:], option={})
+                result = self.predict(data.input, option={})
                 is_correct = correct_label == int(result.label[0])
-                details.append(EvaluateDetail(input, correct_label, result, is_correct))
+                details.append(EvaluateDetail(result, is_correct))
                 label_predict.append(result.label)
 
             accuracy = accuracy_score(label_gold, label_predict)
