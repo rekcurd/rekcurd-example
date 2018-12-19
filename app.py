@@ -7,11 +7,11 @@ import csv
 import os
 
 from enum import Enum
-from typing import Tuple, List, Iterator, Generator
+from typing import Tuple, List
 
 from drucker.logger import JsonSystemLogger
 from drucker import Drucker
-from drucker.utils import PredictLabel, PredictResult, EvaluateResult, EvaluateDetail, EvaluateData
+from drucker.utils import PredictLabel, PredictResult, EvaluateResult, EvaluateDetail
 
 import numpy as np
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
@@ -72,19 +72,11 @@ class MyApp(Drucker):
             self.logger.error(traceback.format_exc())
             raise e
 
-    def parse_eval_data(self, file_path: str) -> Generator[EvaluateData, None, None]:
-        """parse file uploaded from dashboard
-        """
-        with open(file_path, 'r') as f:
-            reader = csv.reader(f, delimiter=",")
-            for row in reader:
-                yield EvaluateData(row[1:], int(row[0]))
-
-    def evaluate(self, eval_data: Iterator[EvaluateData]) -> Tuple[EvaluateResult, List[EvaluateDetail]]:
+    def evaluate(self, file_path: str) -> Tuple[EvaluateResult, List[EvaluateDetail]]:
         """ override
         Evaluate
 
-        :param file: Evaluation data file. bytes
+        :param file_path: Evaluation data file path. str
         :return:
             num: Number of data. int
             accuracy: Accuracy. float
@@ -100,14 +92,16 @@ class MyApp(Drucker):
             label_gold = []
             label_predict = []
             details = []
-            for data in eval_data:
-                num += 1
-                correct_label = data.label
-                label_gold.append(correct_label)
-                result = self.predict(data.input, option={})
-                is_correct = correct_label == int(result.label[0])
-                details.append(EvaluateDetail(result, is_correct))
-                label_predict.append(result.label)
+            with open(file_path, 'r') as f:
+                reader = csv.reader(f, delimiter=",")
+                for row in reader:
+                    num += 1
+                    correct_label = int(row[0])
+                    label_gold.append(correct_label)
+                    result = self.predict(row[1:], option={})
+                    is_correct = correct_label == int(result.label[0])
+                    details.append(EvaluateDetail(result, is_correct))
+                    label_predict.append(result.label)
 
             accuracy = accuracy_score(label_gold, label_predict)
             p_r_f = precision_recall_fscore_support(label_gold, label_predict)
