@@ -5,7 +5,6 @@
 import traceback
 import csv
 import os
-import io
 
 from enum import Enum
 from typing import Tuple, List
@@ -73,11 +72,11 @@ class MyApp(Drucker):
             self.logger.error(traceback.format_exc())
             raise e
 
-    def evaluate(self, file: bytes) -> Tuple[EvaluateResult, List[EvaluateDetail]]:
+    def evaluate(self, file_path: str) -> Tuple[EvaluateResult, List[EvaluateDetail]]:
         """ override
         Evaluate
 
-        :param file: Evaluation data file. bytes
+        :param file_path: Evaluation data file path. str
         :return:
             num: Number of data. int
             accuracy: Accuracy. float
@@ -89,20 +88,20 @@ class MyApp(Drucker):
             details: detail result of each prediction
         """
         try:
-            f = io.StringIO(file.decode("utf-8"))
-            reader = csv.reader(f, delimiter=",")
             num = 0
             label_gold = []
             label_predict = []
             details = []
-            for row in reader:
-                num += 1
-                correct_label = int(row[0])
-                label_gold.append(correct_label)
-                result = self.predict(row[1:], option={})
-                is_correct = correct_label == int(result.label[0])
-                details.append(EvaluateDetail(input, correct_label, result, is_correct))
-                label_predict.append(result.label)
+            with open(file_path, 'r') as f:
+                reader = csv.reader(f, delimiter=",")
+                for row in reader:
+                    num += 1
+                    correct_label = int(row[0])
+                    label_gold.append(correct_label)
+                    result = self.predict(row[1:], option={})
+                    is_correct = correct_label == int(result.label[0])
+                    details.append(EvaluateDetail(result, is_correct))
+                    label_predict.append(result.label)
 
             accuracy = accuracy_score(label_gold, label_predict)
             p_r_f = precision_recall_fscore_support(label_gold, label_predict)
