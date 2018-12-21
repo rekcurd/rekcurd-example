@@ -6,7 +6,6 @@ import traceback
 import csv
 import os
 
-from enum import Enum
 from typing import Tuple, List
 
 from drucker.logger import JsonSystemLogger
@@ -23,15 +22,6 @@ class MyApp(Drucker):
         super().__init__(config_file)
         self.logger = JsonSystemLogger(self.config)
         self.load_model()
-
-    def set_type(self, type_input: Enum, type_output: Enum) -> None:
-        super().set_type(type_input, type_output)
-
-    def get_type_input(self) -> Enum:
-        return super().get_type_input()
-
-    def get_type_output(self) -> Enum:
-        return super().get_type_output()
 
     def load_model(self) -> None:
         """ override
