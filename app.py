@@ -6,11 +6,11 @@ import traceback
 import csv
 import os
 
-from typing import Tuple, List
+from typing import Tuple, List, Generator
 
 from drucker.logger import JsonSystemLogger
 from drucker import Drucker
-from drucker.utils import PredictLabel, PredictResult, EvaluateResult, EvaluateDetail
+from drucker.utils import PredictLabel, PredictResult, EvaluateResult, EvaluateDetail, EvaluateResultDetail
 
 import numpy as np
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
@@ -62,7 +62,13 @@ class MyApp(Drucker):
             self.logger.error(traceback.format_exc())
             raise e
 
-    def evaluate(self, file_path: str) -> Tuple[EvaluateResult, List[EvaluateDetail]]:
+    def __generate_eval_data(self, file_path: str) -> Generator[EvaluateDetail, None, None]:
+        with open(file_path, 'r') as f:
+            reader = csv.reader(f, delimiter=",")
+            for row in reader:
+                yield int(row[0]), row[1:]
+
+    def evaluate(self, file_path: str) -> Tuple[EvaluateResult, List[EvaluateResultDetail]]:
         """ override
         Evaluate
 
@@ -73,7 +79,7 @@ class MyApp(Drucker):
             precision: Precision. arr[float]
             recall: Recall. arr[float]
             fvalue: F1 value. arr[float]
-            option: optional metrics. dict[str, float]
+            option: Optional metrics. dict[str, float]
 
             details: detail result of each prediction
         """
@@ -82,16 +88,13 @@ class MyApp(Drucker):
             label_gold = []
             label_predict = []
             details = []
-            with open(file_path, 'r') as f:
-                reader = csv.reader(f, delimiter=",")
-                for row in reader:
-                    num += 1
-                    correct_label = int(row[0])
-                    label_gold.append(correct_label)
-                    result = self.predict(row[1:], option={})
-                    is_correct = correct_label == int(result.label[0])
-                    details.append(EvaluateDetail(result, is_correct))
-                    label_predict.append(result.label)
+            for correct_label, data in self.__generate_eval_data(file_path):
+                num += 1
+                label_gold.append(correct_label)
+                result = self.predict(data, option={})
+                is_correct = correct_label == int(result.label[0])
+                details.append(EvaluateResultDetail(result, is_correct))
+                label_predict.append(result.label)
 
             accuracy = accuracy_score(label_gold, label_predict)
             p_r_f = precision_recall_fscore_support(label_gold, label_predict)
@@ -101,3 +104,19 @@ class MyApp(Drucker):
             self.logger.error(str(e))
             self.logger.error(traceback.format_exc())
             return EvaluateResult(), []
+
+    def get_evaluate_detail(self, file_path: str, results: List[EvaluateResultDetail]) -> Generator[EvaluateDetail, None, None]:
+        """ override
+        Create EvaluateDetail by merging evaluation data from file_path and EvaluateResultDetail
+
+        :param file_path: Evaluation data file path. str
+        :param results: Detail result of each prediction
+        :return:
+            detail: Evaluation data & result of each prediction
+        """
+        try:
+            for i, (correct_label, data) in enumerate(self.__generate_eval_data(file_path)):
+                yield EvaluateDetail(input=data, label=correct_label, result=results[i])
+        except Exception as e:
+            self.logger.error(str(e))
+            self.logger.error(traceback.format_exc())
