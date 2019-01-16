@@ -1,5 +1,13 @@
 # Change Log
 
+## [v0.4.3](https://github.com/rekcurd/drucker-example/tree/v0.4.3) (2018-12-26)
+[Full Changelog](https://github.com/rekcurd/drucker-example/compare/v0.4.2...v0.4.3)
+
+**Merged pull requests:**
+
+- Update README.md [\#8](https://github.com/rekcurd/drucker-example/pull/8) ([keigohtr](https://github.com/keigohtr))
+- implement parse\_eval\_data [\#7](https://github.com/rekcurd/drucker-example/pull/7) ([yuki-mt](https://github.com/yuki-mt))
+
 ## [v0.4.2](https://github.com/rekcurd/drucker-example/tree/v0.4.2) (2018-11-28)
 [Full Changelog](https://github.com/rekcurd/drucker-example/compare/v0.4.1...v0.4.2)
 
