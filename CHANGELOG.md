@@ -1,5 +1,12 @@
 # Change Log
 
+## [v0.4.5](https://github.com/rekcurd/drucker-example/tree/v0.4.5) (2019-01-22)
+[Full Changelog](https://github.com/rekcurd/drucker-example/compare/v0.4.4...v0.4.5)
+
+**Merged pull requests:**
+
+- Update libraries [\#10](https://github.com/rekcurd/drucker-example/pull/10) ([keigohtr](https://github.com/keigohtr))
+
 ## [v0.4.4](https://github.com/rekcurd/drucker-example/tree/v0.4.4) (2019-01-15)
 [Full Changelog](https://github.com/rekcurd/drucker-example/compare/v0.4.3...v0.4.4)
 
