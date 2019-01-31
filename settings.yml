@@ -21,7 +21,7 @@ app.service.level: development
 
 # ML model
 # Put your model file under "{app.modeldir}/{app.name}/{app.modelfile}".
-# If you use Drucker-dashboard, {app.modelfile} is set automatically.
+# If you use Rekcurd dashboard, {app.modelfile} is set automatically.
 # If you setup MySQL server, {app.modelfile} is set automatically.
 #   Model directory:  DRUCKER_SERVICE_MODEL_DIR > app.modeldir
 #   Model filepath:   DB entry > DRUCKER_SERVICE_MODEL_FILE > app.modelfile
@@ -30,7 +30,7 @@ app.modelfile: default.model
 
 # DB
 # "use.db" must be one of [sqlite(default)/mysql].
-# If you use Drucker-dashboard, these values are set automatically.
+# If you use Rekcurd dashboard, these values are set automatically.
 #   DB type: DRUCKER_DB_MODE > use.db
 #   MySQL host: DRUCKER_DB_MYSQL_HOST > db.mysql.host
 #   MySQL port: DRUCKER_DB_MYSQL_PORT > db.mysql.port

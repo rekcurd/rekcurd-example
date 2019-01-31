@@ -1,15 +1,15 @@
 # Rekcurd-example
-This is the example of [Rekcurd](https://github.com/rekcurd/drucker).
+This is the example of [Rekcurd](https://github.com/rekcurd/python-rekcurd).
 
 
 ## Parent Project
-https://github.com/rekcurd/drucker-parent
+https://github.com/rekcurd/community
 
 
 ## Components
-- [Rekcurd](https://github.com/rekcurd/drucker): Project for serving ML module.
-- [Rekcurd-dashboard](https://github.com/rekcurd/drucker-dashboard): Project for managing ML model and deploying ML module.
-- [Rekcurd-client](https://github.com/rekcurd/drucker-client): Project for integrating ML module. 
+- [Rekcurd](https://github.com/rekcurd/python-rekcurd): Project for serving ML module.
+- [Rekcurd-dashboard](https://github.com/rekcurd/dashboard): Project for managing ML model and deploying ML module.
+- [Rekcurd-client](https://github.com/rekcurd/python-client): Project for integrating ML module. 
 
 
 ## How to use it
@@ -176,7 +176,7 @@ def serve():
         while True:
             time.sleep(_ONE_DAY_IN_SECONDS)
     except KeyboardInterrupt:
-        system_logger.info("Shutdown drucker worker.")
+        system_logger.info("Shutdown rekcurd worker.")
         server.stop(0)
 
 
@@ -188,7 +188,7 @@ if __name__ == '__main__':
 This is the boot script of your ML application. Example code is available [here](start.sh).
 
 ```bash
-ECHO_PREFIX="[drucker example]: "
+ECHO_PREFIX="[rekcurd example]: "
 
 set -e
 set -u
@@ -200,7 +200,7 @@ python server.py
 ```
 
 ### logger.py (if necessary)
-If you want to customize the logger, implement the interface class of [logger_interface.py](https://github.com/rekcurd/drucker/blob/master/drucker/logger/logger_interface.py)
+If you want to customize the logger, implement the interface class of [logger_interface.py](https://github.com/rekcurd/python-rekcurd/blob/master/rekcurd/logger/logger_interface.py)
 
 
 ## Try it!

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-ECHO_PREFIX="[drucker example]: "
+ECHO_PREFIX="[rekcurd example]: "
 
 set -e
 set -u
