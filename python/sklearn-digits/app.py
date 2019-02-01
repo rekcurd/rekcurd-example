@@ -8,16 +8,16 @@ import os
 
 from typing import Tuple, List, Generator
 
-from drucker.logger import JsonSystemLogger
-from drucker import Drucker
-from drucker.utils import PredictLabel, PredictResult, EvaluateResult, EvaluateDetail, EvaluateResultDetail
+from rekcurd.logger import JsonSystemLogger
+from rekcurd import Rekcurd
+from rekcurd.utils import PredictLabel, PredictResult, EvaluateResult, EvaluateDetail, EvaluateResultDetail
 
 import numpy as np
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 from sklearn.externals import joblib
 
 
-class MyApp(Drucker):
+class MyApp(Rekcurd):
     def __init__(self, config_file: str = None):
         super().__init__(config_file)
         self.logger = JsonSystemLogger(self.config)
