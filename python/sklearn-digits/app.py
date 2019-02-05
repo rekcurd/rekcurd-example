@@ -10,7 +10,7 @@ from typing import Tuple, List, Generator
 
 from rekcurd.logger import JsonSystemLogger
 from rekcurd import Rekcurd
-from rekcurd.utils import PredictLabel, PredictResult, EvaluateResult, EvaluateDetail, EvaluateResultDetail
+from rekcurd.utils import PredictInput, PredictResult, EvaluateResult, EvaluateDetail, EvaluateResultDetail
 
 import numpy as np
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
@@ -40,7 +40,7 @@ class MyApp(Rekcurd):
                 # noinspection PyProtectedMember
                 os._exit(-1)
 
-    def predict(self, input: PredictLabel, option: dict = None) -> PredictResult:
+    def predict(self, input: PredictInput, option: dict = None) -> PredictResult:
         """ override
         Predict.
 
@@ -62,7 +62,7 @@ class MyApp(Rekcurd):
             self.logger.error(traceback.format_exc())
             raise e
 
-    def __generate_eval_data(self, file_path: str) -> Generator[EvaluateDetail, None, None]:
+    def __generate_eval_data(self, file_path: str) -> Generator[Tuple[int, List[str]], None, None]:
         with open(file_path, 'r') as f:
             reader = csv.reader(f, delimiter=",")
             for row in reader:
