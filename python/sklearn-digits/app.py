@@ -104,7 +104,7 @@ class MyApp(Rekcurd):
             accuracy = accuracy_score(label_gold, label_predict)
             prf_label_order = [self.label2idx[l] for l in self.labels]
             p_r_f = precision_recall_fscore_support(label_gold, label_predict, labels=prf_label_order)
-            res = EvaluateResult(num, accuracy, p_r_f[0].tolist(), p_r_f[1].tolist(), p_r_f[2].tolist(), {}, self.labels)
+            res = EvaluateResult(num, accuracy, p_r_f[0].tolist(), p_r_f[1].tolist(), p_r_f[2].tolist(), self.labels)
             return res, details
         except Exception as e:
             self.logger.error(str(e))
