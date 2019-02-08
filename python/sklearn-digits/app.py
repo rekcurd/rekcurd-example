@@ -23,6 +23,10 @@ class MyApp(Rekcurd):
         self.logger = JsonSystemLogger(self.config)
         self.load_model()
 
+        self.labels = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+        self.label2idx = dict((l, i) for i, l in enumerate(self.labels))
+        self.idx2label = dict((i, l) for l, i in self.label2idx.items())
+
     def load_model(self) -> None:
         """ override
         Load ML model.
@@ -56,7 +60,7 @@ class MyApp(Rekcurd):
                 option = {}
             label_predict = self.predictor.predict(
                 np.array([input], dtype='float64')).tolist()
-            return PredictResult(label_predict, [1] * len(label_predict), option={})
+            return PredictResult(self.idx2label[label_predict[0]], 1, option={})
         except Exception as e:
             self.logger.error(str(e))
             self.logger.error(traceback.format_exc())
@@ -66,7 +70,7 @@ class MyApp(Rekcurd):
         with open(file_path, 'r') as f:
             reader = csv.reader(f, delimiter=",")
             for row in reader:
-                yield int(row[0]), row[1:]
+                yield self.label2idx[row[0]], row[1:]
 
     def evaluate(self, file_path: str) -> Tuple[EvaluateResult, List[EvaluateResultDetail]]:
         """ override
@@ -88,18 +92,19 @@ class MyApp(Rekcurd):
             label_gold = []
             label_predict = []
             details = []
-            for correct_label, data in self.__generate_eval_data(file_path):
+            for correct_label_idx, data in self.__generate_eval_data(file_path):
                 num += 1
-                label_gold.append(correct_label)
+                label_gold.append(correct_label_idx)
                 result = self.predict(data, option={})
-                is_correct = correct_label == int(result.label[0])
+                predict_label_idx = self.label2idx[result.label]
+                is_correct = correct_label_idx == predict_label_idx
                 details.append(EvaluateResultDetail(result, is_correct))
-                label_predict.append(result.label)
+                label_predict.append(predict_label_idx)
 
             accuracy = accuracy_score(label_gold, label_predict)
-            uniq_labels = list(set(label_gold))
-            p_r_f = precision_recall_fscore_support(label_gold, label_predict, labels=uniq_labels)
-            res = EvaluateResult(num, accuracy, p_r_f[0].tolist(), p_r_f[1].tolist(), p_r_f[2].tolist(), {}, uniq_labels)
+            prf_label_order = [self.label2idx[l] for l in self.labels]
+            p_r_f = precision_recall_fscore_support(label_gold, label_predict, labels=prf_label_order)
+            res = EvaluateResult(num, accuracy, p_r_f[0].tolist(), p_r_f[1].tolist(), p_r_f[2].tolist(), {}, self.labels)
             return res, details
         except Exception as e:
             self.logger.error(str(e))
