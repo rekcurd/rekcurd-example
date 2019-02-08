@@ -97,7 +97,7 @@ class MyApp(Rekcurd):
                 label_predict.append(result.label)
 
             accuracy = accuracy_score(label_gold, label_predict)
-            uniq_labels = sorted(list(set(label_gold)))
+            uniq_labels = list(set(label_gold))
             p_r_f = precision_recall_fscore_support(label_gold, label_predict, labels=uniq_labels)
             res = EvaluateResult(num, accuracy, p_r_f[0].tolist(), p_r_f[1].tolist(), p_r_f[2].tolist(), {}, uniq_labels)
             return res, details
