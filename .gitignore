@@ -103,8 +103,9 @@ ENV/
 # PyCharm
 .idea/
 
-# ML Model
-model/
+# Rekcurd
+rekcurd-model/
+rekcurd-eval/
 
 # sqlite
 *.sqlite3
