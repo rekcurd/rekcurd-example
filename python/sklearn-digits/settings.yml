@@ -1,45 +1,27 @@
-# (Mainly) For non-kubernetes users.
-# Define the parameters below.
+# For non-kubernetes users. If you deploy it from Rekcuerd-dashboard, all parameters are set by dashboard.
 
-# Debug flag
-test: True
+## Debug mode.
+debug: True
 
-# This must be unique.
-# It can be overwritten with the environment variable "REKCURD_APPLICATION_NAME".
-app.name: rekcurd-sample
+## Application parameters.
+app:
+  name: rekcurd-sample        # This must be unique.
+  port: 5000                  # Service port. Default "5000"
+  service_level: development  # Service level. One of [development/beta/staging/sandbox/production]. Default "development"
 
-# It can be overwritten with the environment variable "REKCURD_SERVICE_PORT".
-app.port: 5000
+## Machine learning model access parameters.
+model:
+  mode: local                 # ML model destination. One of [local/ceph_s3/aws_s3/gcs]. "ceph_s3" uses Ceph API that is compatible with AWS S3 API. "aws_s3" uses AWS S3 API. "gcs" uses GCS API. Default "local"
+  filepath: ./model/default.model     # ML model file. Default "./model/default.model"
 
-# This must be unique.
-# It can be overwritten with the environment variable "REKCURD_SERVICE_NAME".
-app.service.name: dev-001
+## Ceph access parameters. Required for "ceph_s3" mode.
+ceph:
+  access_key: xxxxx           # Ceph access key.
+  secret_key: xxxxx           # Ceph secret key.
+  host: xxxxx                 # Ceph host.
+  port: 8773                  # Ceph port. Default "8773"
+  is_secure: False            # Ceph secure access. Set "False" if you are not using ssl.
+  bucket: xxxxx               # Ceph bucket name.
 
-# This must be one of [development/beta/staging/sandbox/production].
-# It can be overwritten with the environment variable "REKCURD_SERVICE_LEVEL".
-app.service.level: development
-
-# ML model
-# Put your model file under "{app.modeldir}/{app.name}/{app.modelfile}".
-# If you use Rekcurd dashboard, {app.modelfile} is set automatically.
-# If you setup MySQL server, {app.modelfile} is set automatically.
-#   Model directory:  REKCURD_SERVICE_MODEL_DIR > app.modeldir
-#   Model filepath:   DB entry > REKCURD_SERVICE_MODEL_FILE > app.modelfile
-app.modeldir: ./model
-app.modelfile: default.model
-
-# DB
-# "use.db" must be one of [sqlite(default)/mysql].
-# If you use Rekcurd dashboard, these values are set automatically.
-#   DB type: REKCURD_DB_MODE > use.db
-#   MySQL host: REKCURD_DB_MYSQL_HOST > db.mysql.host
-#   MySQL port: REKCURD_DB_MYSQL_PORT > db.mysql.port
-#   MySQL DB name: REKCURD_DB_MYSQL_DBNAME > db.mysql.dbname
-#   MySQL user: REKCURD_DB_MYSQL_USER > db.mysql.user
-#   MySQL password: REKCURD_DB_MYSQL_PASSWORD > db.mysql.password
-use.db: sqlite
-db.mysql.host: localhost
-db.mysql.port: 3306
-db.mysql.dbname: assignment
-db.mysql.user: user
-db.mysql.password: pass
+## (TBD) AWS credentials.
+## (TBD) GCS credentials.

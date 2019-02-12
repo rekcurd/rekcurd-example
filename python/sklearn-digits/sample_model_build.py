@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import os
+from pathlib import Path
 from sklearn.datasets import load_digits
 from sklearn.model_selection import train_test_split
 from sklearn.svm import LinearSVC
@@ -10,9 +10,9 @@ from sklearn.externals import joblib
 from app import MyApp
 
 
-app = MyApp("./settings.yml")
-_DIR_OUTPUT = '{0}/{1}/'.format(app.config.DIR_MODEL, app.config.APPLICATION_NAME)
-_FILE_OUTPUT = _DIR_OUTPUT + 'default.model'
+app = MyApp()
+app.load_config_file("./settings.yml")
+output_filepath = Path(app.config.MODEL_FILE_PATH)
 
 
 def run():
@@ -25,13 +25,12 @@ def run():
 
     label_predict = estimator.predict(data_test)
     print(accuracy_score(label_test, label_predict))
-    if not os.path.isdir(_DIR_OUTPUT):
-        os.makedirs(_DIR_OUTPUT)
-    joblib.dump(estimator, _FILE_OUTPUT)
+    output_filepath.parent.mkdir(parents=True, exist_ok=True)
+    joblib.dump(estimator, str(output_filepath))
 
 
 if __name__ == '__main__':
-    if not os.path.isfile(_FILE_OUTPUT):
+    if not output_filepath.exists():
         run()
     else:
         print("Model already exist. Finish!")
