@@ -17,7 +17,7 @@ from sklearn.externals import joblib
 
 
 class MyApp(Rekcurd):
-    def __init__(self, config_file: str = None):
+    def __init__(self):
         self.labels = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
         self.label2idx = dict((l, i) for i, l in enumerate(self.labels))
         self.idx2label = dict((i, l) for l, i in self.label2idx.items())
