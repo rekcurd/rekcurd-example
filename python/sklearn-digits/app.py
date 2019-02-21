@@ -49,7 +49,7 @@ class MyApp(Rekcurd):
         """
         try:
             label_predict = predictor.predict(
-                np.array([input], dtype='float64')).tolist()
+                np.array([idata], dtype='float64')).tolist()
             return PredictResult(self.idx2label[label_predict[0]], 1, option={})
         except Exception as e:
             self.system_logger.error(str(e))
@@ -114,7 +114,7 @@ class MyApp(Rekcurd):
         """
         try:
             for i, (correct_label, data) in enumerate(self.__generate_eval_data(filepath)):
-                yield EvaluateDetail(input=data, label=[correct_label], result=details[i])
+                yield EvaluateDetail(input=data, label=correct_label, result=details[i])
         except Exception as e:
             self.system_logger.error(str(e))
             self.system_logger.error(traceback.format_exc())
