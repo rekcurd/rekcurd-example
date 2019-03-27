@@ -60,9 +60,9 @@ class MyApp(Rekcurd):
         with open(file_path, 'r') as f:
             reader = csv.reader(f, delimiter=",")
             for row in reader:
-                yield self.label2idx[row[0]], row[1:]
+                yield row[0], row[1:]
 
-    def evaluate(self, predictor: object, filepath: str) -> Tuple[EvaluateResult, List[EvaluateResultDetail]]:
+    def evaluate(self, predictor: object, filepath: str) -> Generator[EvaluateResultDetail, None, EvaluateResult]:
         """ override
         evaluate
         :param predictor: Your ML predictor object. object
@@ -82,27 +82,27 @@ class MyApp(Rekcurd):
             num = 0
             label_gold = []
             label_predict = []
-            details = []
-            for correct_label_idx, data in self.__generate_eval_data(filepath):
+            for correct_label, data in self.__generate_eval_data(filepath):
                 num += 1
+                correct_label_idx = self.label2idx[correct_label]
                 label_gold.append(correct_label_idx)
                 result = self.predict(predictor, data, option={})
                 predict_label_idx = self.label2idx[result.label]
                 is_correct = correct_label_idx == predict_label_idx
-                details.append(EvaluateResultDetail(result, is_correct))
                 label_predict.append(predict_label_idx)
+                yield EvaluateResultDetail(result, is_correct)
 
             accuracy = accuracy_score(label_gold, label_predict)
             prf_label_order = [self.label2idx[l] for l in self.labels]
             p_r_f = precision_recall_fscore_support(label_gold, label_predict, labels=prf_label_order)
             res = EvaluateResult(num, accuracy, p_r_f[0].tolist(), p_r_f[1].tolist(), p_r_f[2].tolist(), self.labels)
-            return res, details
+            return res
         except Exception as e:
             self.system_logger.error(str(e))
             self.system_logger.error(traceback.format_exc())
             return EvaluateResult(), []
 
-    def get_evaluate_detail(self, filepath: str, details: List[EvaluateResultDetail]) -> Generator[EvaluateDetail, None, None]:
+    def get_evaluate_detail(self, filepath: str, details: Generator[EvaluateResultDetail, None, None]) -> Generator[EvaluateDetail, None, None]:
         """ override
         get_evaluate_detail
         :param filepath: Evaluation data file path. str
@@ -113,8 +113,8 @@ class MyApp(Rekcurd):
             rtn.result: Predict detail. EvaluateResultDetail
         """
         try:
-            for i, (correct_label, data) in enumerate(self.__generate_eval_data(filepath)):
-                yield EvaluateDetail(input=data, label=correct_label, result=details[i])
+            for correct_label, data in self.__generate_eval_data(filepath):
+                yield EvaluateDetail(input=data, label=correct_label, result=next(details))
         except Exception as e:
             self.system_logger.error(str(e))
             self.system_logger.error(traceback.format_exc())
