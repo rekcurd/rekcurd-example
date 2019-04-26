@@ -1,5 +1,18 @@
 # Change Log
 
+## [v1.0.0](https://github.com/rekcurd/rekcurd-example/tree/v1.0.0) (2019-04-26)
+[Full Changelog](https://github.com/rekcurd/rekcurd-example/compare/v0.4.5...v1.0.0)
+
+**Merged pull requests:**
+
+- Update documents [\#17](https://github.com/rekcurd/rekcurd-example/pull/17) ([keigohtr](https://github.com/keigohtr))
+- save and load evaluation result gragually [\#16](https://github.com/rekcurd/rekcurd-example/pull/16) ([yuki-mt](https://github.com/yuki-mt))
+- Add `service\_insecure\_host` option [\#15](https://github.com/rekcurd/rekcurd-example/pull/15) ([keigohtr](https://github.com/keigohtr))
+- Update to new Rekcurd `v0.5.0a` [\#14](https://github.com/rekcurd/rekcurd-example/pull/14) ([keigohtr](https://github.com/keigohtr))
+- add label to EvaluateResult [\#13](https://github.com/rekcurd/rekcurd-example/pull/13) ([yuki-mt](https://github.com/yuki-mt))
+- fix type hinting [\#12](https://github.com/rekcurd/rekcurd-example/pull/12) ([yuki-mt](https://github.com/yuki-mt))
+- Rename from `drucker` to `rekcurd` [\#11](https://github.com/rekcurd/rekcurd-example/pull/11) ([keigohtr](https://github.com/keigohtr))
+
 ## [v0.4.5](https://github.com/rekcurd/rekcurd-example/tree/v0.4.5) (2019-01-22)
 [Full Changelog](https://github.com/rekcurd/rekcurd-example/compare/v0.4.4...v0.4.5)
 
