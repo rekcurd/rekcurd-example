@@ -122,5 +122,6 @@ class MyApp(Rekcurd):
 
 if __name__ == '__main__':
     app = MyApp()
-    app.load_config_file("./settings.yml")
+    if os.getenv("REKCURD_KUBERNETES_MODE") is None:
+        app.load_config_file("./settings.yml")
     app.run()

@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import os
+
 from pathlib import Path
 from sklearn.datasets import load_digits
 from sklearn.model_selection import train_test_split
@@ -13,7 +15,7 @@ from app import MyApp
 app = MyApp()
 app.load_config_file("./settings.yml")
 output_filepath = Path(app.config.MODEL_FILE_PATH)
-local_mode = (app.config.MODEL_MODE_ENUM.value == 'local')
+local_mode = (os.getenv("REKCURD_MODEL_MODE", "local") == 'local')
 
 
 def run():
