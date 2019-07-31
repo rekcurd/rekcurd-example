@@ -8,7 +8,7 @@ from sklearn.datasets import load_digits
 from sklearn.model_selection import train_test_split
 from sklearn.svm import LinearSVC
 from sklearn.metrics import accuracy_score
-from sklearn.externals import joblib
+import joblib
 from app import MyApp
 
 

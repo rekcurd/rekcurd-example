@@ -13,7 +13,7 @@ from rekcurd.utils import PredictInput, PredictResult, EvaluateResult, EvaluateD
 
 import numpy as np
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
-from sklearn.externals import joblib
+import joblib
 
 
 class MyApp(Rekcurd):
