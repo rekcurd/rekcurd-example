@@ -1,18 +1,21 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import os
+
 from pathlib import Path
 from sklearn.datasets import load_digits
 from sklearn.model_selection import train_test_split
 from sklearn.svm import LinearSVC
 from sklearn.metrics import accuracy_score
-from sklearn.externals import joblib
+import joblib
 from app import MyApp
 
 
 app = MyApp()
 app.load_config_file("./settings.yml")
 output_filepath = Path(app.config.MODEL_FILE_PATH)
+local_mode = (os.getenv("REKCURD_MODEL_MODE", "local") == 'local')
 
 
 def run():
@@ -30,7 +33,7 @@ def run():
 
 
 if __name__ == '__main__':
-    if not output_filepath.exists():
+    if local_mode and not output_filepath.exists():
         run()
     else:
-        print("Model already exist. Finish!")
+        print("No need to create model. Finish!")
