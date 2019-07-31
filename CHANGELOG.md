@@ -1,5 +1,17 @@
 # Change Log
 
+## [v1.0.1](https://github.com/rekcurd/rekcurd-example/tree/v1.0.1)
+
+[Full Changelog](https://github.com/rekcurd/rekcurd-example/compare/v1.0.0...v1.0.1)
+
+**Merged pull requests:**
+
+- Patch/specify version [\#22](https://github.com/rekcurd/rekcurd-example/pull/22) ([keigohtr](https://github.com/keigohtr))
+- Apply `REKCURD\_KUBERNETES\_MODE` [\#21](https://github.com/rekcurd/rekcurd-example/pull/21) ([keigohtr](https://github.com/keigohtr))
+- Create model when non-kubernetes mode [\#20](https://github.com/rekcurd/rekcurd-example/pull/20) ([keigohtr](https://github.com/keigohtr))
+- Specify version [\#19](https://github.com/rekcurd/rekcurd-example/pull/19) ([keigohtr](https://github.com/keigohtr))
+- Add GCS support [\#18](https://github.com/rekcurd/rekcurd-example/pull/18) ([keigohtr](https://github.com/keigohtr))
+
 ## [v1.0.0](https://github.com/rekcurd/rekcurd-example/tree/v1.0.0) (2019-04-26)
 [Full Changelog](https://github.com/rekcurd/rekcurd-example/compare/v0.4.5...v1.0.0)
 
